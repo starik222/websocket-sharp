@@ -863,7 +863,7 @@ namespace WebSocketSharp.Net
                 return;
             }
 
-            Task.Run(async () => await OutputStream.WriteBytesAsync(
+            Task.Run(() => OutputStream.WriteBytesAsync(
               responseEntity,
               bufferLength,
               () => close(false),

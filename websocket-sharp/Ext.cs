@@ -377,7 +377,7 @@ namespace WebSocketSharp
         //  }
         //}
 
-        internal static async Task CopyToAsync(
+        internal static async void CopyToAsync(
   this Stream sourceStream,
   Stream destinationStream,
   int bufferLength,
@@ -874,7 +874,7 @@ namespace WebSocketSharp
         //  }
         //}
 
-        internal static async Task ReadBytesAsyncExt(
+        internal static async void ReadBytesAsyncExt(
   this Stream stream,
   int length,
   Action<byte[]> completed,
@@ -1044,7 +1044,7 @@ namespace WebSocketSharp
         //    }
         //}
 
-        internal static async Task ReadBytesAsyncExt(
+        internal static async void ReadBytesAsyncExt(
           this Stream stream,
           long length,
           int bufferLength,
@@ -1586,7 +1586,7 @@ namespace WebSocketSharp
         //  );
         //}
 
-        internal static async Task WriteBytesAsync(
+        internal static void WriteBytesAsync(
   this Stream stream,
   byte[] bytes,
   int bufferLength,
@@ -1596,7 +1596,7 @@ namespace WebSocketSharp
         {
             var src = new MemoryStream(bytes);
 
-            await src.CopyToAsync(
+            src.CopyToAsync(
               stream,
               bufferLength,
               () =>

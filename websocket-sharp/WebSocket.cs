@@ -2613,11 +2613,11 @@ namespace WebSocketSharp
             _pongReceived = new ManualResetEvent(false);
             _receivingExited = new ManualResetEvent(false);
 
-            async Task receive() =>
-                await WebSocketFrame.ReadFrameAsync(
+            void receive() =>
+                WebSocketFrame.ReadFrameAsync(
                   _stream,
                   false,
-                  async frame =>
+                 frame =>
                   {
                       var cont = processReceivedFrame(frame)
                            && _readyState != WebSocketState.Closed;
@@ -2632,7 +2632,7 @@ namespace WebSocketSharp
                           return;
                       }
 
-                      await receive();
+                      receive();
 
                       if (_inMessage)
                           return;
@@ -2647,7 +2647,7 @@ namespace WebSocketSharp
                       abort("An exception has occurred while receiving.", ex);
                   }
                 );
-            Task.Run(async () => await receive());
+            Task.Run(() => receive());
         }
 
         // As client

@@ -481,7 +481,7 @@ namespace WebSocketSharp
         //  );
         //}
 
-        private static async Task readExtendedPayloadLengthAsync(
+        private static void readExtendedPayloadLengthAsync(
   Stream stream,
   WebSocketFrame frame,
   Action<WebSocketFrame> completed,
@@ -499,7 +499,7 @@ namespace WebSocketSharp
                 return;
             }
 
-             await stream.ReadBytesAsyncExt(
+             stream.ReadBytesAsyncExt(
               len,
               bytes =>
               {
@@ -541,11 +541,11 @@ namespace WebSocketSharp
         //    );
         //}
 
-        private static async Task readHeaderAsync(
+        private static void readHeaderAsync(
   Stream stream, Action<WebSocketFrame> completed, Action<Exception> error
 )
         {
-            await stream.ReadBytesAsyncExt(
+            stream.ReadBytesAsyncExt(
               _defaultHeaderLength,
               bytes =>
               {
@@ -617,7 +617,7 @@ namespace WebSocketSharp
         //    );
         //}
 
-        private static async Task readMaskingKeyAsync(
+        private static void readMaskingKeyAsync(
   Stream stream,
   WebSocketFrame frame,
   Action<WebSocketFrame> completed,
@@ -633,7 +633,7 @@ namespace WebSocketSharp
                 return;
             }
 
-            await stream.ReadBytesAsyncExt(
+            stream.ReadBytesAsyncExt(
               _defaultMaskingKeyLength,
               bytes =>
               {
@@ -741,7 +741,7 @@ namespace WebSocketSharp
         //    stream.ReadBytesAsync((int)len, comp, error);
         //}
 
-        private static async Task readPayloadDataAsync(
+        private static void readPayloadDataAsync(
   Stream stream,
   WebSocketFrame frame,
   Action<WebSocketFrame> completed,
@@ -785,12 +785,12 @@ namespace WebSocketSharp
 
             if (frame._payloadLength > 126)
             {
-                await stream.ReadBytesAsyncExt(len, 1024, comp, error);
+                stream.ReadBytesAsyncExt(len, 1024, comp, error);
 
                 return;
             }
 
-            await stream.ReadBytesAsyncExt((int)len, comp, error);
+            stream.ReadBytesAsyncExt((int)len, comp, error);
         }
 
         private string toDumpString()
@@ -1020,25 +1020,25 @@ Extended Payload Length: {7}
         //    );
         //}
 
-        internal static async Task ReadFrameAsync(
+        internal static void ReadFrameAsync(
   Stream stream,
   bool unmask,
   Action<WebSocketFrame> completed,
   Action<Exception> error
 )
         {
-            await readHeaderAsync(
+            readHeaderAsync(
               stream,
-              async frame =>
-                await readExtendedPayloadLengthAsync(
+              frame =>
+                readExtendedPayloadLengthAsync(
                   stream,
                   frame,
-                  async frame1 =>
-                    await readMaskingKeyAsync(
+                  frame1 =>
+                    readMaskingKeyAsync(
                       stream,
                       frame1,
-                      async frame2 =>
-                        await readPayloadDataAsync(
+                      frame2 =>
+                        readPayloadDataAsync(
                           stream,
                           frame2,
                           frame3 =>
